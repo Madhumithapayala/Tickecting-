@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to tickecting center</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>New Ticket</h1>
+    <div class="form-container">        <h2>Please provide the following details for support</h2>
+        <form action="/submit" method="post">
+            <div class="form-group">
+                <label for="application_name">Enter Application Name/Seal:</label>
+                <select id="application_name" name="application_name">
+                    <option value="">Select an option...</option>
+		    <option value="App1">107284:Regulatory Operations Workflow</option>
+                    <option value="App2">109914:Regulatory Operations Analytics Platform</option>
+                    <option value="App3">33529:Confirmations</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="issue_description">Describe Your Issue:</label>
+                <textarea id="issue_description" name="issue_description" rows="4" cols="50"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category">
+                    <option value="">Select an option...</option>
+		    <option value="abc">Access Issue</option>
+                    <option value="def">Application is down</option>
+                    <option value="ghi">Application fuctionality Issue</option>
+                    <option value="kjb">Prod manual actions</option>
+                    <option value="dfgf">Application slowness/latency</option>
+                    <option value="rfj">Data related</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="urgency">Priority:</label>
+                <select id="urgency" name="urgency">
+                    <option value="P1">P1</option>
+                    <option value="P2">P2</option>
+                    <option value="P3" selected>P3</option>
+                    <option value="P4">P4</option>
+                    <option value="P5">P5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sid">SID:</label>
+                <input type="text" id="sid" name="sid" pattern="[A-Za-z]\d{6}" title="SID must start with a letter followed by 5 digits (e.g., O770727)" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+
