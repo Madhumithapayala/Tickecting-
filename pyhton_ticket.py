@@ -1,18 +1,19 @@
 import requests
 import json
+import base64
+
+# Apigee base URL
+apigee_base_url = 'YOUR_APIGEE_BASE_URL'
+
+# ServiceNow endpoint
+incident_endpoint = '/api/now/table/incident'
 
 # ServiceNow instance information
-instance_url = 'YOUR_INSTANCE_URL'
 username = 'YOUR_USERNAME'
 password = 'YOUR_PASSWORD'
 
-# Ticket details
-short_description = 'Short description of the issue'
-description = 'Detailed description of the issue'
-seal_id = 'SEAL_ID_OR_CONFIGURATION_ITEM'  # Provide the Seal ID or Configuration Item here
-
 # Construct the URL for the ServiceNow REST API endpoint
-url = f'{instance_url}/api/now/table/incident'
+url = f'{apigee_base_url}{incident_endpoint}'
 
 # Headers for the API request
 headers = {
@@ -20,23 +21,27 @@ headers = {
     'Accept': 'application/json'
 }
 
+# Create the base64-encoded credentials string
+credentials = f'{username}:{password}'
+credentials_bytes = credentials.encode('ascii')
+credentials_base64 = base64.b64encode(credentials_bytes).decode('ascii')
+
+# Include the Authorization header with the base64-encoded credentials
+headers['Authorization'] = f'Basic {credentials_base64}'
+
 # Body of the API request
 data = {
-    'short_description': short_description,
-    'description': description,
-    'cmdb_ci': seal_id  # Use 'cmdb_ci' for Configuration Item or Seal ID
+    'short_description': 'Short description of the issue',
+    'description': 'Detailed description of the issue',
+    'cmdb_ci': 'SEAL_ID_OR_CONFIGURATION_ITEM'
 }
 
 # Make the API request to create the ticket
-response = requests.post(url, auth=(username, password), headers=headers, data=json.dumps(data))
+response = requests.post(url, headers=headers, data=json.dumps(data))
 
 # Check if the request was successful
 if response.status_code == 201:
     print('Ticket created successfully!')
-    # Optionally, you can retrieve the ticket number from the response
-    ticket_number = response.json()['result']['number']
-    print('Ticket Number:', ticket_number)
 else:
     print('Failed to create ticket. Status code:', response.status_code)
     print('Response:', response.text)
-
